@@ -43,12 +43,18 @@ function reducer(state, action, previousState, instance) {
   }
 
   if (action.type === actions.gotoPage) {
-    const { pageCount } = instance
+    const { pageCount, page } = instance
     const newPageIndex = functionalUpdate(action.pageIndex, state.pageIndex)
+    const cannnotPreviousPage = newPageIndex < 0
+    const cannotNextPage =
+      pageCount === -1
+        ? page.length < state.pageSize
+        : newPageIndex > pageCount - 1
 
-    if (newPageIndex < 0 || newPageIndex > pageCount - 1) {
+    if (cannnotPreviousPage || cannotNextPage) {
       return state
     }
+
     return {
       ...state,
       pageIndex: newPageIndex,
@@ -89,10 +95,6 @@ function useInstance(instance) {
     dispatch,
     data,
     manualPagination,
-    manualGlobalFilter,
-    manualFilters,
-    manualGroupBy,
-    manualSortBy,
   } = instance
 
   ensurePluginOrder(
@@ -110,10 +112,10 @@ function useInstance(instance) {
   }, [
     dispatch,
     manualPagination ? null : data,
-    manualGlobalFilter ? null : globalFilter,
-    manualFilters ? null : filters,
-    manualGroupBy ? null : groupBy,
-    manualSortBy ? null : sortBy,
+    globalFilter,
+    filters,
+    groupBy,
+    sortBy,
   ])
 
   const pageCount = manualPagination
@@ -121,7 +123,10 @@ function useInstance(instance) {
     : Math.ceil(rows.length / pageSize)
 
   const pageOptions = React.useMemo(
-    () => (pageCount > 0 ? [...new Array(pageCount)].map((d, i) => i) : []),
+    () =>
+      pageCount > 0
+        ? [...new Array(pageCount)].fill(null).map((d, i) => i)
+        : [],
     [pageCount]
   )
 
@@ -154,7 +159,8 @@ function useInstance(instance) {
   ])
 
   const canPreviousPage = pageIndex > 0
-  const canNextPage = pageCount === -1 || pageIndex < pageCount - 1
+  const canNextPage =
+    pageCount === -1 ? page.length >= pageSize : pageIndex < pageCount - 1
 
   const gotoPage = React.useCallback(
     pageIndex => {

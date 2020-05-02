@@ -1,3 +1,9 @@
+---
+name: useTable
+route: /api/useTable
+menu: API
+---
+
 # `useTable`
 
 - Required
@@ -25,6 +31,11 @@ The following options are supported via the main options object passed to `useTa
   - Optional
   - The initial state object for hidden columns
   - If a column's ID is contained in this array, it will be hidden
+- `autoResetHiddenColumns: Boolean`
+  - Defaults to `true`
+  - When `true`, the `hiddenColumns` state will automatically reset if any of the following conditions are met:
+    - `columns` is changed
+  - To disable, set to `false`
 - `stateReducer: Function(newState, action, prevState) => newState`
   - Optional
   - With every action that is dispatched to the table's internal `React.useReducer` instance, this reducer is called and is allowed to modify the final state object for updating.
@@ -35,7 +46,7 @@ The following options are supported via the main options object passed to `useTa
   - If you need to control part of the table state, this is the place to do it.
   - This function is run on every single render, just like a hook and allows you to alter the final state of the table if necessary.
   - You can use hooks inside of this function, but most of the time, we just suggest using `React.useMemo` to memoize your state overrides.
-  - See the FAQ ["How can I manually control the table state?"](../faq.md#how-can-i-manually-control-the-table-state) for a an example.
+  - See the FAQ ["How can I manually control the table state?"](/faq#how-can-i-manually-control-the-table-state) for a an example.
 - `defaultColumn: Object`
   - Optional
   - Defaults to `{}`
@@ -73,6 +84,7 @@ The following options are supported on any column object you can pass to `column
   - The data returned by an accessor should be **primitive** and sortable.
   - If a string is passed, the column's value will be looked up on the original row via that key, eg. If your column's accessor is `firstName` then its value would be read from `row['firstName']`. You can also specify deeply nested values with accessors like `info.hobbies` or even `address[0].street`
   - If a function is passed, the column's value will be looked up on the original row using this accessor function, eg. If your column's accessor is `row => row.firstName`, then its value would be determined by passing the row to this function and using the resulting value.
+  - Technically speaking, this field isn't required if you have a unique `id` for a column. This is used for things like expander or row selection columns. **Warning**: Only omit `accessor` if you really know what you're doing.
 - `id: String`
   - **Required if `accessor` is a function**
   - This is the unique ID for the column. It is used by reference in things like sorting, grouping, filtering etc.
@@ -89,7 +101,7 @@ The following options are supported on any column object you can pass to `column
   - If a function/component is passed, it will be used for formatting the header value, eg. You can use a `Header` function to dynamically format the header using any table or column state.
 - `Cell: Function | React.Component => JSX`
   - Optional
-  - Defaults to `({ cell: { value } }) => String(value)`
+  - Defaults to `({ value }) => String(value)`
   - Receives the table instance and cell model as props
   - Must return valid JSX
   - This function (or component) is primarily used for formatting the column value, eg. If your column accessor returns a date object, you can use a `Cell` function to format that date to a readable format.

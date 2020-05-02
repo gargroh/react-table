@@ -1,3 +1,41 @@
+---
+name: Changelog
+route: /changelog
+---
+
+# React Table Changelog
+
+## 7.0.4
+
+- Fixed a regression where @scarf/scarf was somehow removed from the package dependencies
+
+## 7.0.3
+
+- Fixed an issue where unnecessary documentation dependencies were added when installing the library
+- Fixed an issue where the `scripts` directory was not added to the npm package on build
+
+## 7.0.2
+
+- Fixed an issue where the internal flexRenderer would not work correctly in production due to the strangest friggin' minification bug I've ever encountered. 🤷‍♂️
+
+## 7.0.1
+
+- Added the `value` property to cell renderers so that destructurin the value from the `cell` property is now not necessary. This should help with people migrating from v6 and also just to cut down on noise in cell renderers
+- Fixed an issue where rollup would not build correctly
+- Fixed an issue where a page index of `-1` would result in an error
+
+## 7.0.0 🎉
+
+- Fixed an issue where page options array could be empty
+- Fixed an issue where duplicate columns would be silently deduped. There is now a warning when duplicate columns are found based on their IDs
+- Moved some functions around so they will get treeshaked with their respective plugins that use them.
+- Fixed an issue where filters, sorting, or grouping changes would not reset pagination
+- Added table and column level options for disabling global filters
+- Fixed an issue where row selection was not deselecting rows
+- Fixed an issue where flex table rendering was not giving the table a minimum width with necessary
+- Fixed an issue where row selection would not work when using other row-transformative plugins like filters or grouping
+- Fixed an issue where header groups were not memoized correctly
+
 ## 7.0.0-rc.16
 
 - Moved away from snapshot tests. No more testing implementation details.

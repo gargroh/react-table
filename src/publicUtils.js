@@ -7,35 +7,10 @@ export const actions = {
 }
 
 export const defaultColumn = {
-  Cell: ({ cell: { value = '' } }) => value,
+  Cell: ({ value = '' }) => value,
   width: 150,
   minWidth: 0,
   maxWidth: Number.MAX_SAFE_INTEGER,
-}
-
-export function defaultOrderByFn(arr, funcs, dirs) {
-  return [...arr].sort((rowA, rowB) => {
-    for (let i = 0; i < funcs.length; i += 1) {
-      const sortFn = funcs[i]
-      const desc = dirs[i] === false || dirs[i] === 'desc'
-      const sortInt = sortFn(rowA, rowB)
-      if (sortInt !== 0) {
-        return desc ? -sortInt : sortInt
-      }
-    }
-    return dirs[0] ? rowA.index - rowB.index : rowB.index - rowA.index
-  })
-}
-
-export function defaultGroupByFn(rows, columnId) {
-  return rows.reduce((prev, row, i) => {
-    // TODO: Might want to implement a key serializer here so
-    // irregular column values can still be grouped if needed?
-    const resKey = `${row.values[columnId]}`
-    prev[resKey] = Array.isArray(prev[resKey]) ? prev[resKey] : []
-    prev[resKey].push(row)
-    return prev
-  }, {})
 }
 
 function mergeProps(...propList) {
@@ -235,18 +210,22 @@ export function flexRender(Comp, props) {
   return isReactComponent(Comp) ? <Comp {...props} /> : Comp
 }
 
-function isClassComponent(component) {
+function isReactComponent(component) {
   return (
-    typeof component === 'function' &&
-    !!(() => {
-      let proto = Object.getPrototypeOf(component)
-      return proto.prototype && proto.prototype.isReactComponent
-    })()
+    isClassComponent(component) ||
+    typeof component === 'function' ||
+    isExoticComponent(component)
   )
 }
 
-function isFunctionComponent(component) {
-  return typeof component === 'function'
+function isClassComponent(component) {
+  return (
+    typeof component === 'function' &&
+    (() => {
+      const proto = Object.getPrototypeOf(component)
+      return proto.prototype && proto.prototype.isReactComponent
+    })()
+  )
 }
 
 function isExoticComponent(component) {
@@ -254,13 +233,5 @@ function isExoticComponent(component) {
     typeof component === 'object' &&
     typeof component.$$typeof === 'symbol' &&
     ['react.memo', 'react.forward_ref'].includes(component.$$typeof.description)
-  )
-}
-
-function isReactComponent(component) {
-  return (
-    isClassComponent(component) ||
-    isFunctionComponent(component) ||
-    isExoticComponent(component)
   )
 }
