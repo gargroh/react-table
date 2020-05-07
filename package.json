@@ -3,7 +3,7 @@
   "version": "7.0.4",
   "description": "Hooks for building lightweight, fast and extendable datagrids for React",
   "license": "MIT",
-  "homepage": "https://github.com/tannerlinsley/react-table#readme",
+  "homepage": "https://react-table.js.org",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tannerlinsley/react-table.git"
@@ -35,14 +35,13 @@
   "files": [
     "CHANGELOG.md",
     "src/**/*.js",
-    "index.d.ts",
     "dist",
     "README.md",
     "scripts/"
   ],
   "browserslist": "> 0.25%, not dead",
   "dependencies": {
-    "@scarf/scarf": "^0.1.5"
+    "@scarf/scarf": "^1.0.4"
   },
   "peerDependencies": {
     "react": "^16.8.3"

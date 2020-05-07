@@ -24,7 +24,7 @@ The following options are supported via the main options object passed to `useTa
   - This information is stored in state since the table is allowed to manipulate the filter through user interaction.
 - `getSubRows: Function(row, relativeIndex) => Rows[]`
   - Optional
-  - See the [useTable hook](#table-options) for more details
+  - See the [useTable hook](./useTable.md#table-options) for more details
 - `manualExpandedKey: String`
   - Optional
   - Defaults to `expanded`

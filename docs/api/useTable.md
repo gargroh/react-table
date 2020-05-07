@@ -56,7 +56,7 @@ The following options are supported via the main options object passed to `useTa
 - `initialRowStateKey: String`
   - Optional
   - Defaults to `initialState`
-  - This key is used to look for the initial state of a row when initializing the `rowState` for a`data` array.
+  - This key is used to look for the initial state of a row when initializing the `rowState` for a `data` array.
   - If the value located at `row[initialRowStateKey]` is falsey, `{}` will be used instead.
 - `getSubRows: Function(row, relativeIndex) => Rows[]`
   - Optional
@@ -69,10 +69,6 @@ The following options are supported via the main options object passed to `useTa
   - Optional
   - Must be **memoized**
   - Defaults to `(row, relativeIndex, parent) => parent ? [parent.id, relativeIndex].join('.') : relativeIndex`
-- `debug: Bool`
-  - Optional
-  - A flag to turn on debug mode.
-  - Defaults to `false`
 
 ### Column Options
 
