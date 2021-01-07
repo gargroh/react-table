@@ -65,9 +65,9 @@ By default, the sorting will be `alphanumeric`. This can be changed in your `col
 Other options include `basic` and `datetime`.
 Note that if you're planning on sorting numbers between 0 and 1, `basic` sorting will be more accurate.
 
-More information can be found in the [API Docs](/api/useSortBy)
+More information can be found in the [API Docs](https://react-table.tanstack.com/docs/api/useSortBy)
 
-````diff
+```diff
 const columns = React.useMemo(
     () => [
       {
@@ -109,5 +109,5 @@ const columns = React.useMemo(
       },
     ],
     []
-  )```
-````
+  )
+```
